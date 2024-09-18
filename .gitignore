@@ -1,2 +1,9 @@
 .vscode
 .DS_Store
+
+.clang-tidy
+.clang-format
+
+CMakeLists.txt
+bin
+catch.hpp
