@@ -1,0 +1,140 @@
+\documentclass[11pt,a4paper]{scrarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+
+\usepackage{indentfirst}
+\usepackage{xcolor,graphicx, tikz, wrapfig}
+
+\usepackage{minted}
+\usemintedstyle{vs}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+\usepackage[unicode]{hyperref}
+\definecolor{linkcolor}{HTML}{0000E6}
+\definecolor{urlcolor}{HTML}{0000E6}
+\definecolor{citecolor}{HTML}{0000E6}
+\hypersetup{pdfpagemode=None,linktoc=page,citecolor=citecolor,linkcolor=linkcolor,urlcolor=urlcolor,colorlinks=true}
+
+\theoremstyle{definition}
+\newtheorem{subtask}{Пункт}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\setlength{\parindent}{1cm}
+
+\author{Клычков Максим Дмитриевич}
+
+\begin{document}
+
+\centerline{\textbf{\huge Алгоритмы и структуры данных-1}}
+\centerline{\textbf{SET 1. Задача A2b.}}
+\begin{flushright}
+	\emph{Осень 2024. Клычков М. Д.}
+\end{flushright}
+
+\begin{figure}[htp]
+	\centering
+	\begin{minipage}{0.4\textwidth}
+		\begin{minted}[linenos]{cpp}
+int fastExponent(int x, int n) {
+  int r = 1;
+  int p = x;
+  int e = n;
+
+  while (e > 0) {
+    if (e % 2 != 0) {
+      r *= p;
+    }
+    p *= p;
+    e /= 2;
+  }
+
+  return r;
+}
+		\end{minted}
+	\end{minipage}
+\end{figure}
+
+\begin{subtask}
+	Этот алгоритм очень похож на перевод десятичного числа $n$ в двоичную систему счисления. Буквально, мы перебираем с помощью переменной $p$ все степени двойки (здесь они представлены как $\{x^{1}, x^{2}, x^{4}, x^{8}, x^{16}, \dots\}$) и, если этот разряд необходим для представления числа (то есть остаток от деления --- $1$), то добавляем к результату. Другими словами, $r = x^{2^{i_1} + 2^{i_2} + \dots + 2^{i_k}}$. Тогда в теле \texttt{if} произойдет количество умножений равное количеству единиц в двоичной записи числа $n$.
+
+	\emph{Цель:} найти число, описывающее количество единиц в двоичной записи числа $n$ --- $f(n)$. Пусть функция $r(n)$ --- остаток $n$ при делении на $2$. Тогда:
+
+	$$
+		f(n) = r(n) + r\left( \left\lfloor \frac{n}{2} \right\rfloor \right) + r\left( \left\lfloor \frac{n}{4} \right\rfloor \right) + r\left( \left\lfloor \frac{n}{8} \right\rfloor \right) + \dots
+	$$
+
+	Это полностью соответствует алгоритму поиска представления числа в двоичной системе счисления «в столбик».
+
+	$$
+		r(n) = n \% 2 = n - 2 \left\lfloor \frac{n}{2} \right\rfloor
+	$$
+
+	Подставим и получим:
+
+	\begin{align*}
+		f(n) & = n - 2 \left\lfloor \frac{n}{2} \right\rfloor + \left\lfloor \frac{n}{2} \right\rfloor - 2 \left\lfloor \frac{n}{4} \right\rfloor + \left\lfloor \frac{n}{4} \right\rfloor - 2 \left\lfloor \frac{n}{8} \right\rfloor + \dots = \\
+		     & = n - \sum_{i = 1}^{\left\lfloor \log_2 n \right\rfloor} \left\lfloor \frac{n}{2^{i}} \right\rfloor
+	\end{align*}
+
+	Учитывая еще, что всего в тело цикла будет $\left(\left\lfloor \log_2 n \right\rfloor + 1\right)$ вхождений, можно наконец составить общее количество умножений:
+
+	\begin{align*}
+		m(n) & = \left(\left\lfloor \log_2 n \right\rfloor + 1\right) + f(n) =                                                                                              \\
+		     & = \left(\left\lfloor \log_2 n \right\rfloor + 1\right) + n - \sum_{i = 1}^{\left\lfloor \log_2 n \right\rfloor} \left\lfloor \frac{n}{2^{i}} \right\rfloor = \\
+		     & = n + \left\lfloor \log_2 n \right\rfloor - \sum_{i = 1}^{\left\lfloor \log_2 n \right\rfloor} \left\lfloor \frac{n}{2^{i}} \right\rfloor + 1
+	\end{align*}
+
+	В задаче просили именно точное количество умножений, поэтому как-то усреднять это значения и приводить ответ к другому виду не имеет смысла.
+\end{subtask}
+
+\begin{subtask}
+	Выберем в качестве инварианта цикла \texttt{while} условие:
+
+	$$
+		r \cdot p^{e} = x^{n}
+	$$
+
+	Такой выбор мотивирован той же идеей, что и в пункте 1, а именно переводом числа $n$ в двоичную систему счисления. На $i$-й итерации цикла (отсчет с $0$) мы принимаем решение об $i$-м бите числа $n$. Если в двоичной записи $n$ должен присутствовать $i$-й бит, то изменяется результирующая переменная $r$, которая накапливает уже собранные степени двойки.
+
+	Можно по-другому представить, что происходит, например, так:
+
+	\begin{alignat*}{3}
+		r                                                                          & \cdot p^{e}                                                                                          & = x^{n} \\
+		1                                                                          & \cdot x^{n}                                                                                          & = x^{n} \\
+		(1 \cdot x^{n \% 2})                                                       & \cdot \left(x^{2}\right)^{\left\lfloor \frac{n}{2} \right\rfloor}                                    & = x^{n} \\
+		(1 \cdot x^{n \% 2} \cdot x^{\left\lfloor \frac{n}{2} \right\rfloor \% 2}) & \cdot \left(x^{4}\right)^{\left\lfloor\frac{\left\lfloor \frac{n}{2} \right\rfloor}{2}\right\rfloor} & = x^{n} \\
+		\dots                                                                      & \cdot \dots                                                                                          & = \dots \\
+		x^{n}                                                                      & \cdot \left(x^{2^{\left\lfloor \log_2 n \right\rfloor}}\right)^{0}                                   & = x^{n}
+	\end{alignat*}
+
+	\texttt{INIT:} Перед циклом переменные проинициализировались так: $r \coloneq 1 ;\, p \coloneq x ;\, e \coloneq n$. Осталось лишь подставить: $r \cdot p^{e} = 1 \cdot x^{n} = x^{n}$.
+
+	\texttt{MNT:} Пусть на $i$-ой итерации цикла: $x^{k} \cdot \left(x^{2^{i}}\right)^{m} = x^{n}$, тогда:
+
+	\begin{alignat*}{3}
+		x^{k}                  & \cdot \left(x^{2^{i}}\right)^{m}                                                     & = x^{n} \\
+		x^{k}                  & \cdot x^{m \cdot 2^{i}}                                                              & = x^{n} \\
+		x^{k}                  & \cdot x^{\left(2 \left\lfloor \frac{m}{2} \right\rfloor + m \% 2\right) \cdot 2^{i}} & = x^{n} \\
+		x^{k}                  & \cdot x^{\left(2 \left\lfloor \frac{m}{2} \right\rfloor + m \% 2\right) \cdot 2^{i}} & = x^{n} \\
+		x^{k}                  & \cdot x^{2^{i+1} \left\lfloor \frac{m}{2} \right\rfloor + 2^{i} (m \% 2)}            & = x^{n} \\
+		x^{k + 2^{i} (m \% 2)} & \cdot x^{2^{i+1} \left\lfloor \frac{m}{2} \right\rfloor}                             & = x^{n} \\
+	\end{alignat*}
+
+	Преобразовав исходное выражение нашли новые $m$ и $k$, следовательно на промежуточных шагах инвариант поддерживается.
+
+	\texttt{TRM:} Причина выхода из цикла: $e = 0$. Тогда:
+	$$
+		r \cdot p^{0} = x^{n} \Rightarrow r = x^{n}
+	$$
+
+\end{subtask}
+
+
+\end{document}

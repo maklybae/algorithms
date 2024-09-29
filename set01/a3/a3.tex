@@ -1,0 +1,178 @@
+\documentclass[11pt,a4paper]{scrarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array}
+
+\usepackage{indentfirst}
+\usepackage{xcolor,graphicx, tikz, wrapfig}
+\usepackage{longtable}
+
+\usepackage{minted}
+\usemintedstyle{vs}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+\usepackage[unicode]{hyperref}
+\definecolor{linkcolor}{HTML}{0000E6}
+\definecolor{urlcolor}{HTML}{0000E6}
+\definecolor{citecolor}{HTML}{0000E6}
+\hypersetup{pdfpagemode=None,linktoc=page,citecolor=citecolor,linkcolor=linkcolor,urlcolor=urlcolor,colorlinks=true}
+
+\theoremstyle{definition}
+\newtheorem{subtask}{Пункт}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\setlength{\parindent}{1cm}
+
+\author{Клычков Максим Дмитриевич}
+
+\begin{document}
+
+\centerline{\textbf{\huge Алгоритмы и структуры данных-1}}
+\centerline{\textbf{SET 1. Задача A3.}}
+\begin{flushright}
+	\emph{Осень 2024. Клычков М. Д.}
+\end{flushright}
+
+\begin{figure}[htp]
+	\centering
+	\begin{minted}[linenos]{cpp}
+void NestedLoops(size_t n) {
+  int x = 100;
+  int y = 0;
+  for (size_t outer = 1; outer <= n; outer *= 2) {
+    x = x + outer;
+    for (size_t inner = 2; inner < n; ++inner) {
+      if (x > y / inner) {
+        y = y + outer / inner;
+      } else {
+        --y;
+      }
+    }
+  }
+}
+	\end{minted}
+\end{figure}
+
+\begin{subtask}
+	Начнем исследование циклического алгоритма с внешнего цикла.
+
+	Легко определить количество итераций цикла, оно зависит только от $n$. Итак, всего будет произведено $(\left\lfloor \log_2(n) \right\rfloor + 1)$ итераций и $(\left\lfloor \log_2(n) \right\rfloor + 2)$ сравнений внутри \texttt{for}.
+
+	В теле внешнего цикла одно присваивание с арифметической операцией (итого $2$ операции) и еще один (вложенный) цикл.
+
+	Теперь разберем внутренний цикл: всего будет произведено $(n - 2)$ итерации и $(n - 1)$ сравнение. В теле цикла лишь один условный оператор, который перед самим сравнением делает операцию деления.
+
+	Заметим, что количество операций в каждой ветви \emph{отличается}:
+	\begin{itemize}
+		\item в ветви выполнения условия всего происходит $3$ атомарные операции (присваивание и $2$ арифметические операции)
+		\item в ветви невыполнения условия всего происходит 2 операции (присваивание и уменьшение на единицу)
+	\end{itemize}
+
+	Достаточно трудно определить, количество вхождений в каждую ветвь, так как при недостаточно больших $n$, которые возможно перебрать на бумаге условие конструкции \texttt{if} выполняется всегда. Предпримем попытку усреднить значения на примере конкретных $n$.
+
+	Для этого с посчитаем для каждого $n$ количество вхождений в каждую из ветвей.
+
+	\begin{longtable}{|>{$}l<{$}|>{$}l<{$}|>{$}l<{$}|}
+		\hline
+		n         & \texttt{true} & \texttt{false}       \\ \hline
+		\endfirsthead
+		%
+		\multicolumn{3}{c}%
+		{{\bfseries Table continued from previous page}} \\
+		\endhead
+		%
+		1         & 0             & 0                    \\ \hline
+		2         & 0             & 0                    \\ \hline
+		4         & 6             & 0                    \\ \hline
+		8         & 24            & 0                    \\ \hline
+		16        & 70            & 0                    \\ \hline
+		32        & 180           & 0                    \\ \hline
+		64        & 434           & 0                    \\ \hline
+		128       & 1008          & 0                    \\ \hline
+		256       & 2286          & 0                    \\ \hline
+		512       & 5100          & 0                    \\ \hline
+		1024      & 11241         & 1                    \\ \hline
+		2048      & 24550         & 2                    \\ \hline
+		4096      & 53219         & 3                    \\ \hline
+		8192      & 114655        & 5                    \\ \hline
+		16384     & 245723        & 7                    \\ \hline
+		32768     & 524247        & 9                    \\ \hline
+		65536     & 1114066       & 12                   \\ \hline
+		131072    & 2359245       & 15                   \\ \hline
+		262144    & 4980680       & 18                   \\ \hline
+		524288    & 10485699      & 21                   \\ \hline
+		1048576   & 22020029      & 25                   \\ \hline
+		2097152   & 46137271      & 29                   \\ \hline
+		4194304   & 96468913      & 33                   \\ \hline
+		8388608   & 201326506     & 38                   \\ \hline
+		16777216  & 419430307     & 43                   \\ \hline
+		33554432  & 872415132     & 48                   \\ \hline
+		67108864  & 1811939220    & 54                   \\ \hline
+		134217728 & 3758096268    & 60                   \\ \hline
+		268435456 & 7784628100    & 66                   \\ \hline
+	\end{longtable}
+
+	Сравним число \texttt{true} (выполнения условия конструкции \texttt{if}) с \texttt{false} (невыполнения), заметим, что отношение этих чисел имеет порядок хотя бы $10^{-5}$, так что это отличие пренебрежительно мало. Более того, несрабатывание условия \texttt{if} происходит уже на больших числах, так что отличие в одной операции между двумя ветвями компенсируется сложностью арифметических операций, которая растет с ростом порядка числа. Учитывая все вышеперечисленные факты, будем считать, что в теле внутреннего цикла выполняются следующие операции:
+
+	$$
+		\underbrace{2}_{\texttt{if header}} + \underbrace{3}_{\texttt{if body}} = 5
+	$$
+
+	Подведем итог:
+	$
+		T(n) = \underbrace{(\left\lfloor \log_2(n) \right\rfloor + 2)}_{\texttt{loop compares}} + (\left\lfloor \log_2(n) \right\rfloor + 1) \cdot (2 + \underbrace{(n - 1)}_{\texttt{loop compares}} + (n - 2) \cdot 5)
+	$
+	\bigskip
+
+	\begin{equation} \label{eq:1}
+		T(n) = 1 + (\left\lfloor \log_2(n) \right\rfloor + 1) (6n - 9)
+	\end{equation}
+\end{subtask}
+
+\begin{subtask}
+	Хотим доказать, что $T(n) = \Theta(n \log n)$.
+
+	Согласно определению, нужно найти такие $c_{1}$, $c_{2}$ и $N_{0}$, что:
+	$$
+		\forall n > N_0 \colon c_{1} n \log_2 n \overset{(2)}{\le}
+		1 + (\left\lfloor \log_2(n) \right\rfloor + 1) (6n - 9)
+		\overset{(3)}{\le} c_{2} n \log_2 n
+	$$
+
+	$(2)$:
+	\begin{align*}
+		T(n) & = 1 + (\left\lfloor \log_2(n) \right\rfloor + 1) (6n - 9) =                                     \\
+		     & = 6n \left\lfloor \log_2(n) \right\rfloor - 9 \left\lfloor \log_2(n) \right\rfloor + 6n - 8 \ge \\
+		     & \ge 6n (\log_2(n) - 1) - 9 (\log_2(n) - 1) + 6n - 8 =                                           \\
+		     & = 6n \log_2(n) - 9 \log_2(n) + 1 \ge c_{1} n \log_2 n
+	\end{align*}
+
+	$$
+		6 - \frac{9}{n} + \frac{1}{n \log_2 n} \ge c_{1} \Rightarrow c_{1} = 6 \wedge N_{0} = 32
+	$$
+	\pagebreak
+
+	$(3)$:
+	\begin{align*}
+		T(n) & = 1 + (\left\lfloor \log_2(n) \right\rfloor + 1) (6n - 9) =                                     \\
+		     & = 6n \left\lfloor \log_2(n) \right\rfloor - 9 \left\lfloor \log_2(n) \right\rfloor + 6n - 8 \le \\
+		     & \le 6n \log_2(n) + 6n \le c_{2} n \log_2(n)
+	\end{align*}
+
+	$$
+		c_2 \ge 6 + \frac{6}{\log_2(n)} \Rightarrow c_{2} = 8 \wedge N_{0} = 32
+	$$
+
+	Итого:
+	$$
+		\forall n > 32 \colon 6 n \log_2(n) \le T(n) \le 8 n \log_2(n)
+	$$
+\end{subtask}
+
+\end{document}

@@ -1,0 +1,137 @@
+\documentclass[11pt,a4paper]{scrarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array}
+
+\usepackage{indentfirst}
+\usepackage{xcolor,graphicx, tikz, wrapfig}
+\usepackage{longtable}
+\usepackage{nicematrix}
+
+\usepackage{minted}
+\usemintedstyle{vs}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+\usepackage[unicode]{hyperref}
+\definecolor{linkcolor}{HTML}{0000E6}
+\definecolor{urlcolor}{HTML}{0000E6}
+\definecolor{citecolor}{HTML}{0000E6}
+\hypersetup{pdfpagemode=None,linktoc=page,citecolor=citecolor,linkcolor=linkcolor,urlcolor=urlcolor,colorlinks=true}
+
+\theoremstyle{definition}
+\newtheorem{subtask}{Пункт}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\setlength{\parindent}{1cm}
+
+\author{Клычков Максим Дмитриевич}
+
+\begin{document}
+
+\centerline{\textbf{\huge Алгоритмы и структуры данных-1}}
+\centerline{\textbf{SET 1. Задача A5.}}
+\begin{flushright}
+	\emph{Осень 2024. Клычков М. Д.}
+\end{flushright}
+
+\begin{figure}[htp]
+	\centering
+	\begin{minted}[linenos]{cpp}
+std::pair<int, int> FindInSortedMatrix(std::vector<std::vector<int>>& matrix, int key) {
+  int first_row{0};
+  int last_row = matrix.size() - 1;
+  int first_col{0};
+  int last_col = matrix[0].size() - 1;
+
+  while (first_row <= last_row && first_col <= last_col) {
+    if (matrix[first_row][first_col] == key) {
+      return {first_row, first_col};
+    }
+    if (!(matrix[last_row][first_col] <= key && 
+          key <= matrix[last_row][last_col])) {
+      --last_row;
+    } else if (!(matrix[last_row][first_col] <= key && 
+                 key <= matrix[first_row][first_col])) {
+      ++first_col;
+    } else if (!(matrix[first_row][first_col] <= key && 
+                 key <= matrix[first_row][last_col])) {
+      ++first_row;
+    } else {
+      --last_col;
+    }
+  }
+  return {-1, -1};
+}
+	\end{minted}
+\end{figure}
+
+\begin{subtask}
+	Приведенный алгоритм находит положение числа \texttt{key} в матрице \texttt{matrix} и возвращает индекс этого числа. Если в матрице не содержится \texttt{key}, то возвращается пара $(-1, -1)$.
+
+	Шаг циклического алгоритма --- рассмотрение подматрицы (не обязательно квадратной), внутри которой (включая границы) может находится искомое число.
+
+	Утверждается, что за один шаг можно вычеркнуть один крайний столбец или одну крайнюю строку рассматриваемой подматрицы, так как на нем/ней не может находится искомое число.
+
+	\emph{Доказательство:} От противного. Предположим, что число может лежать на любой из границ.
+
+	$$
+		\begin{pmatrix}
+			b      & \dots  & \dots  & c      \\
+			\vdots & \ddots & \ddots & \vdots \\
+			a      & \dots  & \dots  & d
+		\end{pmatrix}
+	$$
+
+	Тогда верно:
+
+	\begin{alignat*}{3}
+		 & a &  & \le key &  & \le b \\
+		 & b &  & \le key &  & \le c \\
+		 & d &  & \le key &  & \le c \\
+		 & a &  & \le key &  & \le d
+	\end{alignat*}
+
+	Но тогда, например, $a \le key \le b \le key \le c$, а значения уникальны. $\square$
+	\pagebreak
+
+	Алгоритм линеен, так как всего в худшем случае можно сделать $2n - 1$ вычеркиваний. Докажем это в пункте $2$.
+\end{subtask}
+
+\begin{subtask}
+	Будем анализировать лишь худший случай. Он характеризуется так:
+	\begin{itemize}
+		\item $key \notin matrix$
+		\item числа располагаются так, что будет выполнено максимальное количество вычеркиваний
+	\end{itemize}
+
+	Такая матрица существует, приведем пример:
+
+	$$
+		\begin{pNiceMatrix}
+			12 & 13 & 18 \\
+			8  & 10 & 14 \\
+			5  & 6  & 7  \\
+		\end{pNiceMatrix},
+		key = 11
+	$$
+
+	Рассмотрим теперь тело цикла. Сложно определить количество вхождений в каждую из ветвей, чтобы посчитать сколько сравнений будет сделано внутри \texttt{if}-ов, поэтому усредним и будем считать, что $2$ из $3$ сложных условий будет проверено (всего возможных сценария зачеркиваний~$4$). В теле \texttt{if} всегда выполняется $2$ операции: уменьшение на единицу и присваивание.
+
+	Теперь все готово к тому, чтобы составлять $T(n)$.
+	\begin{align*}
+		T(n) & = \underbrace{6}_{\texttt{var init}} + \underbrace{2n}_{\texttt{loop compares}} + \underbrace{(2n - 1)}_{\texttt{loop iter}} \cdot \left( \underbrace{1}_\texttt{not an ans} + 2 \cdot \underbrace{3}_{\texttt{if head}} + \underbrace{2}_{\texttt{in/decrement}} \right) \\
+		     & = 6 + 2n + 9(2n - 1) = 20n + 5
+	\end{align*}
+
+	Покажем, что $T(n) = O(n)$:
+	$$
+		T(n) = 20n + 5 \le cn \Rightarrow c = 25, N_0 = 1
+	$$
+\end{subtask}
+\end{document}

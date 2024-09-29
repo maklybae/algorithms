@@ -1,9 +1,18 @@
 .vscode
 .DS_Store
 
+# format
 .clang-tidy
 .clang-format
 
+# cpp
 CMakeLists.txt
 bin
 catch.hpp
+
+# latex
+*.aux
+*.log
+*.out
+*.gz
+_minted*
