@@ -1,0 +1,87 @@
+\documentclass[11pt,a4paper]{scrarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array}
+
+\usepackage{indentfirst}
+\usepackage{xcolor,graphicx, tikz, wrapfig}
+\usepackage{longtable}
+
+% \usepackage{minted}
+% \usemintedstyle{vs}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+\usepackage[unicode]{hyperref}
+\definecolor{linkcolor}{HTML}{0000E6}
+\definecolor{urlcolor}{HTML}{0000E6}
+\definecolor{citecolor}{HTML}{0000E6}
+\hypersetup{pdfpagemode=None,linktoc=page,citecolor=citecolor,linkcolor=linkcolor,urlcolor=urlcolor,colorlinks=true}
+
+\theoremstyle{definition}
+\newtheorem{subtask}{Пункт}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+
+\setlength{\parindent}{1cm}
+
+\author{Клычков Максим Дмитриевич}
+
+\begin{document}
+
+\centerline{\textbf{\huge Алгоритмы и структуры данных-1}}
+\centerline{\textbf{SET 2. Задача A3.}}
+\begin{flushright}
+	\emph{Осень 2024. Клычков М. Д.}
+\end{flushright}
+
+\begin{subtask}
+	Для начала стоит вспомнить, что нам известно об асимптотике алгоритма Штрассена. На лекции было доказано, что $T_\text{Ш} = O(n^{\log_2 7})$. От нас требуется найти алгоритм, выражающийся рекуррентным соотношением
+	\begin{equation}
+		\label{eqn:t}
+		T(n) = a \cdot T\left(\frac{n}{4}\right) + \Theta(n^2)
+	\end{equation}
+
+	Заметим, что для данного рекуррентного соотношения возможно применение мастер-теоремы.
+
+	\begin{align}
+		\label{eqn:case1} \text{при } \log_4 a = 2 \Leftrightarrow a = 16 & \colon T(n) = O(n^2 \log_4 n) \\
+		\label{eqn:case2} \text{при } \log_4 a > 2 \Leftrightarrow a > 16 & \colon T(n) = O(n^{\log_4 a}) \\
+		\label{eqn:case3} \text{при } \log_4 a < 2 \Leftrightarrow a < 16 & \colon T(n) = O(n^2)
+	\end{align}
+
+
+	На лекции отмечалось, что умножение квадратных матриц может быть реализовано только за $O(n^{2+\varepsilon}), \, \varepsilon > 0$. Воспользуемся этой информацией и уберем из рассмотрения \eqref{eqn:case3}, так как в этом случае $T(n) = O(n^2)$.
+
+	Покажем, что нам подходит случай \eqref{eqn:case1}. Достаточно, чтобы $T(n) = O(T_\text{Ш}(n))$ или, подставив конкретную $T(n)$, $O(n^2 \log_4 n) = O(n^{\log_2 7})$
+
+	\begin{gather*}
+		n^2 \log_4 n \leq c n^{\log_2 7} \\
+		\log_4 n \leq c n^{\log_2 7 - 2} \\
+		\log_4 n \leq c n^{\log_2 1.75} \Leftrightarrow \log n = O(n^{\log_2 1.75})
+	\end{gather*}
+
+	А последнее мы принимаем за истину (знания о порядке роста функций).
+
+	Рассмотрим оставшийся случай \eqref{eqn:case2}. Тут все действия будут схожи с предыдущим пунктом, только остается решить уравнение с параметром.
+	Нам нужно найти такие $a$, что $T(n) = O(T_\text{Ш}(n))$ или, подставив конкретную $T(n)$, $O(n^{\log_4 a}) = O(n^{\log_2 7}) \Leftrightarrow \log_4 a \leq \log_2 7$
+
+	\begin{gather*}
+		\frac{1}{2} \log_2 a \leq \log_2 7 \\
+		\log_2 a \leq \log_2 49 \\
+		a \leq 49
+	\end{gather*}
+
+	% дописать ответ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	% включать или нет 49 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	% пользоваться ли 2+eps ??????????????????????????????????????????????????????
+\end{subtask}
+
+\end{document}
