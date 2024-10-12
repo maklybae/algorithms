@@ -79,18 +79,66 @@
 \end{subtask}
 
 \begin{subtask}
-	% Разберем сначала первый алгоритм. Планируется сначала сделать предположение, затем доказать его при помощи метода подстановки. Нас интересует рассмотрение только случая $n > 20$ из двух возможных \eqref{eqn:t1}.
+	Разберем сначала \textbf{первый} алгоритм. Планируется сначала сделать предположение, затем доказать его при помощи метода подстановки. Нас интересует рассмотрение только случая $n > 20$ из двух возможных \eqref{eqn:t1}.
 
-	% Так как функция $T_1(n)$ монотонно возрастающая, верно, что
-	% $$
-	% 	T_1(n) = T_1(n - 5) + T_1(n - 8) + \Theta(n^2) \leq 2 T_1(n - 5) + \Theta(n^2)
-	% $$
+	Так как функция $T_1(n)$ монотонно возрастающая, верно, что
+	\begin{align}
+		\label{eqn:t1leq} T_1(n) & = T_1(n - 5) + T_1(n - 8) + \Theta(n^2) \leq 2 T_1(n - 5) + \Theta(n^2) \\
+		\label{eqn:t1geq} T_1(n) & = T_1(n - 5) + T_1(n - 8) + \Theta(n^2) \geq 2 T_1(n - 8) + \Theta(n^2)
+	\end{align}
 
-	Разберем второй алгоритм. Докажем, что $T_2(n) = \Theta(n)$. Для этого применим метод подстановки два раза:
+	Обозначим $T_1^1(n) = 2 T_1^1(n - 8) + \Theta(n^2)$ и $T_1^2(n) = 2 T_1^2(n - 5) + \Theta(n^2)$. Тогда можем записать следующее двойное неравенство:
+
+	$$
+		T_1^1(n) \leq T_1(n) \leq T_1^2(n)
+	$$
+
+	Нашей целью является оценка верхней и нижней асимптотической грани, поэтому можно найти функции $f(n)$ и $g(n)$ такие, что $T_1^1(n) = \Omega(f(n))$ и $T_1^2(n) = O(g(n))$, тогда, пользуясь неравенством, можно получить, что $T_1(n) = \Omega(f(n))$ и $T_1(n) = O(g(n))$.
 
 	\begin{enumerate}
-		\item Гипотеза $T_2(n) = O(n) \Leftrightarrow T_2(n) \leq cn$. Тогда
-		      $T_2\left(\frac{n}{4}\right) \leq \frac{cn}{4}$. Делаем подстановку:
+		\item Гипотеза $T_1^1(n) = 2 T_1^1(n - 8) + \Theta(n^2) = \Omega(2^\frac{n}{8})$, а именно $T_1^1(n) \geq c 2^\frac{n}{8}$.
+		      Тогда, пользуясь $T_1^1(n - 8) \geq c 2^\frac{n - 8}{8}$, делаем подстановку:
+		      \begin{align*}
+			      T_1^1(n) & \geq 2 \cdot c 2^\frac{n - 8}{8} + qn^2 \\
+			               & = c \cdot 2^\frac{n}{8} + qn^2
+		      \end{align*}
+
+		      \begin{align*}
+			      c \cdot 2^\frac{n}{8} + qn^2 & \geq c \cdot 2^\frac{n}{8} \\
+			      qn^2                         & \geq 0
+		      \end{align*}
+		      Пусть $c = 1, n_0 = 1, q > 0$, получаем верное утверждение $\blacksquare$
+
+		\item Гипотеза $T_1^2(n) = 2 T_1^2(n - 5) + \Theta(n^2) = O(2^\frac{n}{5}n^2)$, а именно $T_1^2(n) \leq c \cdot 2^\frac{n}{5} \cdot n^2 - d \cdot 2^\frac{n}{5} \cdot n - p \cdot 2^\frac{n}{5}$.
+		      Тогда, пользуясь $T_1^2(n - 5) \leq c \cdot 2^\frac{n - 5}{5} \cdot (n-5)^2 - d \cdot 2^\frac{n - 5}{5} \cdot (n - 5) - p \cdot 2^\frac{n - 5}{5}$, делаем подстановку.
+		      \begin{align*}
+			      T_1^2(n) & \leq 2 c \cdot 2^\frac{n - 5}{5} \cdot (n-5)^2 - 2 d \cdot 2^\frac{n - 5}{5} \cdot (n - 5) - 2 p \cdot 2^\frac{n - 5}{5} + qn^2 \\
+			               & = c \cdot 2^\frac{n}{5} n^2 - (10c + d) \cdot 2^\frac{n}{5} n - (25c - 5d + p) \cdot 2^\frac{n}{5} + qn^2
+		      \end{align*}
+
+		      \begin{align*}
+			      c \cdot 2^\frac{n}{5} n^2 - (10c + d) \cdot 2^\frac{n}{5} n - (25c - 5d + p) \cdot 2^\frac{n}{5} + qn^2 & \leq c \cdot 2^\frac{n}{5} \cdot n^2 - d \cdot 2^\frac{n}{5} \cdot n - p \cdot 2^\frac{n}{5} \\
+			      -10c \cdot 2^\frac{n}{5} n - (25 c - 5d) 2^\frac{n}{5} + qn^2                                           & \leq 0
+		      \end{align*}
+
+		      Пусть $c = 1, d = 5$, тогда получим
+		      \begin{align*}
+			      10 \cdot 2^\frac{n}{5} n \geq mn^2 \\
+			      10 \cdot 2^\frac{n}{5} \geq mn
+		      \end{align*}
+
+		      Очевидно, что на бесконечности это верно $\blacksquare$
+	\end{enumerate}
+	$$
+		T_1^1(n) = \Omega(2^\frac{n}{8}) \wedge T_1^2(n) = O(2^\frac{n}{5}n^2) \Rightarrow T_1(n) = \Omega(2^\frac{n}{8}) \wedge T_1(n) = O(2^\frac{n}{5}n^2)
+	$$
+	\pagebreak
+
+	Разберем \textbf{второй} алгоритм. Докажем, что $T_2(n) = \Theta(n)$. Для этого применим метод подстановки два раза:
+
+	\begin{enumerate}
+		\item Гипотеза $T_2(n) = O(n) \Leftrightarrow T_2(n) \leq cn$. Тогда, пользуясь
+		      $T_2\left(\frac{n}{4}\right) \leq \frac{cn}{4}$, делаем подстановку:
 		      \begin{align*}
 			      T_2(n) & \leq 2 \cdot \frac{cn}{4} + dn           \\
 			             & = \frac{cn}{2} + dn                      \\
@@ -99,8 +147,8 @@
 
 		      $d$ фиксированная положительная константа, найдем для нее подходящее $c$.
 		      Например, при $c = 4d$: $\left(\frac{4d}{2} + d\right) n \leq 4dn \Leftrightarrow 3d n \leq 4d n$, что верно $\forall n \geq 1$ $\blacksquare$
-		\item Гипотеза $T_2(n) = \Omega(n) \Leftrightarrow T_2(n) \geq cn$. Тогда
-		      $T_2\left(\frac{n}{4}\right) \geq \frac{cn}{4}$. Делаем подстановку:
+		\item Гипотеза $T_2(n) = \Omega(n) \Leftrightarrow T_2(n) \geq cn$. Тогда, пользуясь
+		      $T_2\left(\frac{n}{4}\right) \geq \frac{cn}{4}$, делаем подстановку:
 		      \begin{align*}
 			      T_2(n) & \geq 2 \cdot \frac{cn}{4} + dn           \\
 			             & = \frac{cn}{2} + dn                      \\
@@ -111,7 +159,7 @@
 	\end{enumerate}
 
 	$$
-		T_2(n) = O(n) \cap T_2(n) = \Omega(n) \Longrightarrow T_2(n) = \Theta(n)
+		T_2(n) = O(n) \land T_2(n) = \Omega(n) \Longrightarrow T_2(n) = \Theta(n)
 	$$
 \end{subtask}
 
