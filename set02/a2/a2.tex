@@ -1,0 +1,122 @@
+\documentclass[11pt,a4paper]{scrarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array}
+
+\usepackage{indentfirst}
+\usepackage{xcolor,graphicx, tikz, wrapfig}
+\usepackage{longtable}
+
+% \usepackage{minted}
+% \usemintedstyle{vs}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+\usepackage[unicode]{hyperref}
+\definecolor{linkcolor}{HTML}{0000E6}
+\definecolor{urlcolor}{HTML}{0000E6}
+\definecolor{citecolor}{HTML}{0000E6}
+\hypersetup{pdfpagemode=None,linktoc=page,citecolor=citecolor,linkcolor=linkcolor,urlcolor=urlcolor,colorlinks=true}
+
+\theoremstyle{definition}
+\newtheorem{subtask}{Пункт}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+
+\setlength{\parindent}{1cm}
+
+\author{Клычков Максим Дмитриевич}
+
+\begin{document}
+
+\centerline{\textbf{\huge Алгоритмы и структуры данных-1}}
+\centerline{\textbf{SET 2. Задача A2.}}
+\begin{flushright}
+	\emph{Осень 2024. Клычков М. Д.}
+\end{flushright}
+
+\begin{align}
+	\label{eqn:t1} T(n) & = 7 T\left(\frac{n}{3}\right) + n^2                      \\
+	\label{eqn:t2} T(n) & = 4 T\left(\frac{n}{2}\right) + \log_2 n                 \\
+	\label{eqn:t3} T(n) & = 0.5 T\left(\frac{n}{2}\right) + \frac{1}{n}            \\
+	\label{eqn:t4} T(n) & = 3 T\left(\frac{n}{3}\right) + \frac{n}{2}              \\
+	\label{eqn:t5} T(n) & = T\left(n - 1\right) + T\left(n - 2\right) + n \log_2 n
+\end{align}
+
+\begin{subtask}
+	Будем использовать те же обозначения, что и в формулировке мастер-теоремы (в общем виде):
+	$$
+		T(n) = a \cdot T\left(\frac{n}{b}\right) + O(n^k f(n))
+	$$
+	$$
+		T(n) = a \cdot T(n - b) + O(n^k \cdot f(n))
+	$$
+
+	\begin{enumerate}
+		\item Рассмотрим \eqref{eqn:t1}:
+		      $a = 7 \geq 1, \, b = 3 > 1, \, k = 2 \geq 0, \, f(n) = 1 \text{ -- неубывающая функция}$. Мастер-теорема применима, $\log_3(7) < 2$
+		      $$
+			      T(n) = O(n^k \cdot f(n)) = O(n^2)
+		      $$
+		\item Рассмотрим \eqref{eqn:t2}:
+		      $a = 4 \geq 1, \, b = 2 > 1, \, k = 0 \geq 0, \, f(n) = 1 \text{ -- неубывающая функция}$. Мастер-теорема применима, $\log_2(4) > 0$
+		      $$
+			      T(n) = O(n^{\log_b a} \cdot f(n)) = O(n^2)
+		      $$
+		\item Рассмотрим \eqref{eqn:t3}:
+		      $a = 0.5, \, b = 2, \, k = -1, \, f(n) = 1$. Нельзя применить мастер-теорему, так как неверно, что $a \geq 1$ и $k > 0$
+		\item Рассмотрим \eqref{eqn:t4}:
+		      $a = 3 \geq 1, \, b = 3 > 1, \, k = 1 \geq 0, \, f(n) = 1 \text{ -- неубывающая функция}$. Мастер-теорема применима, $\log_3(3) = 1$
+		      $$
+			      T(n) = O(n^k \cdot f(n) \cdot \log_2 n) = O(n \log_2 n)
+		      $$
+		\item Рассмотрим \eqref{eqn:t5}:
+		      Нельзя применить мастер-теорему, так как вид функции $T(n)$ не подходит под «стандарт»/«шаблон» мастер-теоремы.
+	\end{enumerate}
+\end{subtask}
+
+\begin{subtask}
+	Найдем \textbf{возможную} асимптотическую верхнюю границу для тех рекуррентных соотношений, для которых неприменима мастер-теорема.
+
+	\begin{enumerate}
+		\item Снова рассмотрим \eqref{eqn:t3}. Докажем, что $T(n) = O(n)$ --- наша гипотеза.
+
+		      Тогда $T\left(\frac{n}{2}\right) = \frac{cn}{2}$. Подставим
+		      \begin{align*}
+			      T(n) & \leq 0.5 \frac{cn}{2} + \frac{1}{n}  \\
+			           & = \frac{cn}{4} + \frac{1}{n} \leq cn
+		      \end{align*}
+
+		      $$
+			      cn^2 + 4 \leq 4cn^2 \Rightarrow
+			      c \geq \frac{4}{3n^2}
+		      $$
+
+		      Можно взять $n_0 = 1$ и $c = 2$ $\blacksquare$
+		      \pagebreak
+		\item Снова рассмотрим \eqref{eqn:t5}. Докажем, что $T(n) = O(2^n \cdot n \log_2 n)$. Нам известно, что функция $T(n)$ монотонно неубывающая, и мы хотим ограничить ее сверху. Тогда:
+		      $$
+			      T(n) = T\left(n - 1\right) + T\left(n - 2\right) + n \log_2 n \leq
+			      2 T\left(n - 1\right) + n \log_2 n = T'(n)
+		      $$
+
+		      К функции $T'(n)$ уже можно применить мастер-теорему.
+
+		      $a = 2 > 0, \, b = 1 > 0, \, k = 1 > 0, \, f(n) = \log_2 n \text{ -- неубывающая функция}$
+
+		      $$
+			      T'(n) = O(2^n \cdot n \log_2 n)
+		      $$
+
+		      Но $T(n) \leq T'(n) = O(2^n \cdot n \log_2 n) \Longrightarrow T(n) = O(2^n \cdot n \log_2 n)$ $\blacksquare$
+	\end{enumerate}
+\end{subtask}
+
+\end{document}

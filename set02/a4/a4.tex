@@ -1,0 +1,184 @@
+\documentclass[11pt,a4paper]{scrarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array}
+
+\usepackage{indentfirst}
+\usepackage{xcolor,graphicx, tikz, wrapfig}
+\usepackage{longtable}
+
+\usepackage{minted}
+\usemintedstyle{vs}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+\usepackage[unicode]{hyperref}
+\definecolor{linkcolor}{HTML}{0000E6}
+\definecolor{urlcolor}{HTML}{0000E6}
+\definecolor{citecolor}{HTML}{0000E6}
+\hypersetup{pdfpagemode=None,linktoc=page,citecolor=citecolor,linkcolor=linkcolor,urlcolor=urlcolor,colorlinks=true}
+
+\theoremstyle{definition}
+\newtheorem{subtask}{Пункт}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+
+\setlength{\parindent}{1cm}
+
+\author{Клычков Максим Дмитриевич}
+
+\begin{document}
+
+\centerline{\textbf{\huge Алгоритмы и структуры данных-1}}
+\centerline{\textbf{SET 2. Задача A4.}}
+\begin{flushright}
+    \emph{Осень 2024. Клычков М. Д.}
+\end{flushright}
+
+\begin{subtask}
+    Представим описание алгоритма в виде программы на \texttt{C++}:
+
+    \begin{figure}[h]
+        \centering
+        \begin{minted}[linenos]{cpp}
+long long CINV(std::vector<long long> &arr) {
+    // Base case
+    if (arr.size() == 1) {
+        return 0;
+    }
+
+    // 1. Divide
+    size_t mid = arr.size() / 2;
+    std::vector<long long> left(arr.begin(), arr.begin() + mid);
+    std::vector<long long> right(arr.begin() + mid, arr.end());
+
+    // 2. Conquer
+    auto count_left = CINV(left);
+    auto count_right = CINV(right);
+    
+    // 3. Combine
+    long long count_merge{};
+    for (auto iter = arr.begin(), iter_left = left.begin(), iter_right = right.begin();
+            iter != arr.end(); ++iter) {
+        if (iter_left != left.end() &&
+              (iter_right == right.end() || *iter_left <= *iter_right)) {
+            *iter = *iter_left;
+            ++iter_left;
+        } else {
+            *iter = *iter_right;
+            count_merge += std::distance(iter_left, left.end());
+            ++iter_right;                
+        }
+    }
+
+    return count_left + count_right + count_merge;
+}
+        \end{minted}
+        \caption{\label{fig:CINV} \texttt{CINV} algorithm}
+    \end{figure}
+
+    Неформально опишу, что происходит в этом алгоритме. Для того чтобы посчитать количество инверсий, здесь применяется принцип \emph{разделяй и властвуй}, а именно «модифицированный» алгоритм \texttt{MergeSort}. Помимо сортировки на каждом этапе \texttt{COMBINE} мы подсчитываем количество инверсий, а ответом будет являться их сумма.
+
+    Как же вычисляется это количество? Представим, что при объединении двух упорядоченных подмассивов в один (\emph{merge}) текущий элемент из правого подмассива меньше, чем текущий элемент левого подмассива. Тогда оставшиеся (еще не обработанные) и само текущее числа левого подмассива образуют инверсию с рассматриваемым правым. Найденное число инверсий прибавляется к общему (строка $26$ кода).
+
+    При таком подходе сохранятся все инверсии, которые образовывались элементами из разных подмассивов, поэтому искомое число инверсий будет получено.
+
+    Опишем суть шагов \texttt{DIVIDE}, \texttt{CONQUER} и \texttt{COMBINE}, характерных для \texttt{DaC} алгоритмов.
+
+    \begin{enumerate}
+        \item \texttt{DIVIDE}: Разделяем массив на два подмассива (если число элементов нечетное, количество элементов в правом подмассиве больше на $1$).
+        \item \texttt{CONQUER}: Рекурсивно применяем алгоритм для полученных на этапе \texttt{DIVIDE} подмассивах. Сохраняем результат -- количество инверсий в левой и правой половинах. Базовый случай (\emph{остановка рекурсии}) происходит, когда длина подмассива становится равной единице, в таком случае количество инверсий равно $0$.
+        \item \texttt{COMBINE}: Считаем количество инверсий между двумя упорядоченными подмассивами и собираем из них упорядоченный исходный массив. Если текущий элемент левого подмассива меньше, то он копируется в исходный массив на нужную позицию, но если элемент из правого подмассива больше, то помимо добавления в начальный массив, происходит увеличение счетчика инверсий. Как именно это происходит и почему это верно описано выше.
+    \end{enumerate}
+
+    Выразим рекуррентное соотношение, описывающее функцию временной сложности $T(n)$. В рекурсивной ветке вычислений происходит два вызова подзадача вдвое меньшего размера, а в нерекурсивной -- \emph{merge} двух подмассивов, производящийся проходом цикла до $n$. Тогда можем записать (опускаем округление вниз):
+    \begin{equation}
+        \label{eqn:rec}
+        T(n) = 2T\left(\frac{n}{2}\right) + O(n)
+    \end{equation}
+
+    Воспользуемся мастер-теоремой: $a = 2, b = 2, k = 1, f(n) = 1, \log_b a = 1$. Тогда нам подходит случай $k = log_b a$, следовательно получим:
+    \begin{equation}
+        \label{eqn:bigoh}
+        T(n) = O(n \cdot \log_2 n)
+    \end{equation}
+
+    Стоит отметить, что разработанный алгоритм изменяет исходный массив, поэтому если есть необходимость сохранить начальный порядок, асимптотика не изменится, так как \linebreak $T(n) = O(n \cdot \log_2 n) + O(n) = O(n \cdot \log_2 n)$
+
+    Заметим, что полученное общее число инверсий не всегда равно минимальному числу, достаточному для получения отсортированного массива. Например, в массиве $A = [5, 3, 2, 4, 1]$ всего $8$ инверсий, однако, чтобы получить отсортированный массив достаточно сделать только две: $5 \leftrightarrow 1$ и $3 \leftrightarrow 2$.
+\end{subtask}
+
+\begin{subtask}
+    Сохраним общую схему решения, основанную на модификации \texttt{MergeSort}. Хотим, чтобы шаги \texttt{DIVIDE} и \texttt{CONQUER} должны остаться неизменными, попытаемся изменить только \texttt{COMBINE}.
+
+    Чтобы суть алгоритма (\emph{поиск числа инверсий между двумя половинами}) осталась неизменной, попробуем сохранить встроенную в этот алгоритм сортировку. Но уже не получится так легко подсчитывать инверсии в одно и то же время, что и \emph{merge} двух половин. Тогда добавим дополнительный проход, который будет считать только инверсии, а за ним будет уже соединение двух упорядоченных подмассивов.
+
+    Таким образом в нерекурсивную ветку вычислений рекурренты добавится терм $n$, но он никак не повлияет на асимптотику:
+    \begin{equation}
+        T'(n) = T(n) + n = 2T\left(\frac{n}{2}\right) + O(n) + n = 2T\left(\frac{n}{2}\right) + O(n) = O(n \cdot \log_2 n)
+    \end{equation}
+
+    Также опишем этот алгоритм кодом \ref{fig:CSINV}
+
+    \begin{figure}[h]
+        \centering
+        \begin{minted}[linenos]{cpp}
+long long CSINV(std::vector<long long> &arr) {
+    // Base case
+    if (arr.size() == 1) {
+        return 0;
+    }
+
+    // 1. Divide
+    size_t mid = arr.size() / 2;
+    std::vector<long long> left(arr.begin(), arr.begin() + mid);
+    std::vector<long long> right(arr.begin() + mid, arr.end());
+
+    // 2. Conquer
+    auto count_left = CSINV(left);
+    auto count_right = CSINV(right);
+    
+    // 3. Combine
+
+    // 3.1. Combine - Count inversions which starts at left half and ends at right part 
+    long long count_merge{};
+    for (auto iter_left = left.begin(), iter_right = right.begin();
+            iter_left != left.end() && iter_right != right.end();) {
+        if (iter_left != left.end() &&
+              (iter_right == right.end() || *iter_left <= 2 * *iter_right)) {
+            ++iter_left;
+        } else {
+            count_merge += std::distance(iter_left, left.end());
+            ++iter_right;                
+        }
+    }
+
+    // 3.2. Combine - Merge two halfs to make array sorted
+    for (auto iter = arr.begin(), iter_left = left.begin(), iter_right = right.begin();
+            iter != arr.end(); ++iter) {
+        if (iter_left != left.end() &&
+              (iter_right == right.end() || *iter_left <= *iter_right)) {
+            *iter = *iter_left;
+            ++iter_left;
+        } else {
+            *iter = *iter_right;
+            ++iter_right;
+        }
+    }
+    
+    return count_left + count_right + count_merge;
+}
+        \end{minted}
+        \caption{\label{fig:CSINV} \texttt{CSINV} algorithm}
+    \end{figure}
+
+\end{subtask}
+
+\end{document}
