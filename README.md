@@ -2,6 +2,7 @@
 
 - SETыыыыыы
   - [SET-1](set01/)
+  - [SET-2](set02/)
 - Семинарские ДЗ
   - [ДЗ1](sem01/README.md)
   - [ДЗ2](sem02/queue.tpp)
