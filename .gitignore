@@ -17,3 +17,6 @@ catch.hpp
 *.out
 *.gz
 _minted*
+
+# exceptions
+!set03/a2/analyze/CMakeLists.txt
