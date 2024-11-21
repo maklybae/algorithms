@@ -20,3 +20,4 @@ _minted*
 
 # exceptions
 !set03/a2/analyze/CMakeLists.txt
+!set03/a3/analyze/CMakeLists.txt
