@@ -7,6 +7,39 @@
 #include "random_utils.h"
 
 template <typename T>
+void Heapify(std::vector<T>& arr, long long k, long long heap_start, long long heap_end) {
+  long long heap_size{heap_end - heap_start + 1};
+  while (2 * k <= heap_size) {
+    long long j = 2 * k;
+    if (j < heap_size && arr[j + heap_start - 1] < arr[j + heap_start]) {
+      ++j;
+    }
+    if (arr[k + heap_start - 1] >= arr[j + heap_start - 1]) {
+      break;
+    }
+    std::swap(arr[k + heap_start - 1], arr[j + heap_start - 1]);
+    k = j;
+  }
+}
+
+template <typename T>
+void BuildMaxHeap(std::vector<T>& arr, long long heap_start, long long heap_end) {
+  for (long long k = (heap_end - heap_start + 1) / 2; k >= 1; --k) {
+    Heapify(arr, k, heap_start, heap_end);
+  }
+}
+
+template <typename T>
+void HeapSort(std::vector<T>& arr, long long heap_start, long long heap_end) {
+  BuildMaxHeap(arr, heap_start, heap_end);
+
+  while (heap_end - heap_start > 0) {
+    std::swap(arr[heap_start], arr[heap_end]);
+    Heapify(arr, 1, heap_start, --heap_end);
+  }
+}
+
+template <typename T>
 void IntroSort(std::vector<T>& arr, long long left, long long right, long long depth_limit) {
   if (left >= right) {
     return;
@@ -26,8 +59,7 @@ void IntroSort(std::vector<T>& arr, long long left, long long right, long long d
     }
   } else if (depth_limit == 0) {
     // Heap Sort
-    std::make_heap(arr.begin() + left, arr.begin() + right + 1);
-    std::sort_heap(arr.begin() + left, arr.begin() + right + 1);
+    HeapSort(arr, left, right);
   } else {
     // Quick Sort
     // Partition
