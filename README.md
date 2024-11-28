@@ -9,3 +9,4 @@
   - [ДЗ2](sem02/queue.tpp)
   - [ДЗ3](sem03/README.md)
   - [ДЗ5](sem05/README.md)
+  - [ДЗ10](sem10/)
