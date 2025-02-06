@@ -11,6 +11,7 @@ books
 # cpp
 CMakeLists.txt
 bin
+build
 catch.hpp
 
 # latex
@@ -23,3 +24,7 @@ _minted*
 # exceptions
 !set03/a2/analyze/CMakeLists.txt
 !set03/a3/analyze/CMakeLists.txt
+
+# clangd
+compile_commands.json
+.cache
