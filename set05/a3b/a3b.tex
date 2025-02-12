@@ -1,0 +1,278 @@
+\documentclass[11pt,a4paper]{scrarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{cmap}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array}
+
+\usepackage{indentfirst}
+\usepackage{xcolor,graphicx, tikz, wrapfig}
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{placeins}
+
+\usepackage{minted}
+\usemintedstyle{vs}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+\usepackage[unicode]{hyperref}
+\definecolor{linkcolor}{HTML}{0000E6}
+\definecolor{urlcolor}{HTML}{0000E6}
+\definecolor{citecolor}{HTML}{0000E6}
+% \hypersetup{pdfpagemode=None,linktoc=page,citecolor=citecolor,linkcolor=linkcolor,urlcolor=urlcolor,colorlinks=true}
+
+\theoremstyle{definition}
+\newtheorem{subtask}{Пункт}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+
+\setlength{\parindent}{1cm}
+
+\author{Клычков Максим Дмитриевич}
+
+\begin{document}
+
+\centerline{\textbf{\huge Алгоритмы и структуры данных-2}}
+\centerline{\textbf{SET 5. Задача A3b.}}
+\begin{flushright}
+    \emph{Весна 2024. Клычков М. Д.}
+\end{flushright}
+
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{subtask}
+    Будем работать только с двухсимвольными строками. Пусть $s_1, s_2$ — первый и второй символы строки соответственно, $f(s_1), f(s_2)$ — \texttt{ASCII} коды первого и второго символа соответственно, $g(s_i) = f(s_i) - f(\text{'a'}) + 1$ — смещенный код $i$-го символа строки.
+
+    Тогда хеш-функцию можно записать как $h(s) = g(s_1) + g(s_2) p$. Требуется найти такие строки (формально вектор из двух символов), что $h(s) = 0$, то есть
+    $$g(s_1) + g(s_2) p = 0 \Longleftrightarrow -g(s_1) = g(s_2) p.$$
+
+    Алгоритм поиска описанных строк при заданном параметре $p$ будет заключаться в переборе всех возможных пар символов и проверке условия $-g(s_1) = g(s_2) p$. Заметим, что мы за при просмотре строки-пары $s = \overline{s_1 s_2}$ мы также можем рассмотреть строку $s' = \overline{s_2 s_1}$. Для понимания, как будут выглядеть значения $g(s_i)$ выпишем некоторые из них:
+
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{|c|c|c|}
+            \hline
+            $s_i$  & $f(s_i)$ & $g(s_i)$ \\
+            \hline
+            0      & 48       & -48      \\
+            1      & 49       & -47      \\
+            2      & 50       & -46      \\
+            \vdots & \vdots   & \vdots   \\
+            9      & 57       & -39      \\
+            A      & 65       & -31      \\
+            B      & 66       & -30      \\
+            C      & 67       & -29      \\
+            \vdots & \vdots   & \vdots   \\
+            Z      & 90       & -6       \\
+            a      & 97       & 1        \\
+            b      & 98       & 2        \\
+            c      & 99       & 3        \\
+            \vdots & \vdots   & \vdots   \\
+            z      & 122      & 26       \\
+            \hline
+        \end{tabular}
+    \end{table}
+
+    Теперь все готово к написанию алгоритма, воспользуемся языком программирования \texttt{Python}:
+    \begin{minted}
+        [
+        frame=lines,
+        framesep=2mm,
+        baselinestretch=1.2,
+        fontsize=\footnotesize,
+        linenos
+        ]
+        {python}
+from string import ascii_lowercase, ascii_uppercase, digits
+
+def find_kernel(p: int) -> list[str]:
+    symbols = list(digits) + list(ascii_uppercase) + list(ascii_lowercase) # list of symbols
+    g = lambda si: ord(si) - ord('a') + 1
+    kernel = []
+    for i in range(len(symbols) - 1):
+        for j in range(i + 1, len(symbols)):
+            if -g(symbols[i]) == g(symbols[j]) * p:
+                kernel.append(symbols[i] + symbols[j])
+            if -g(symbols[j]) == g(symbols[i]) * p:
+                kernel.append(symbols[j] + symbols[i])
+
+    return kernel
+    \end{minted}
+
+    Проверим работу алгоритма:
+    \begin{minted}
+        [
+        frame=lines,
+        framesep=2mm,
+        baselinestretch=1.2,
+        fontsize=\footnotesize,
+        linenos
+        ]
+        {python}
+find_kernel(13) # returns ['9c', 'Fb', 'Sa']
+find_kernel(17) # returns ['Oa']
+find_kernel(23) # returns ['2b', 'Ia']
+    \end{minted}
+\end{subtask}
+
+\begin{subtask}
+    Напишем код, который, пользуясь написанной функцией, выведет требуемые строки для всех значений $p \le 31$
+
+    \begin{minted}
+        [
+        frame=lines,
+        framesep=2mm,
+        baselinestretch=1.2,
+        fontsize=\footnotesize,
+        linenos
+        ]
+        {python}
+for p in range(-10000, 32):
+    ker = find_kernel(p)
+    if ker:
+        print(p, ker)
+    \end{minted}
+
+    Утверждается, что порогового значения $-10000$ для параметра $p$ будет достаточно, так как значения $g(s_i) \in [-48, 26]$
+\end{subtask}
+
+Вывод:
+\begin{longtable}{|c|c|}
+    \hline
+    \textbf{p} & \textbf{Values} \\
+    \hline
+    \endfirsthead
+    \hline
+    \textbf{p} & \textbf{Values} \\
+    \hline
+    \endhead
+    \hline
+    \textbf{p} & \textbf{Values} \\
+    \hline
+    \endfirsthead
+    \hline
+    \textbf{p} & \textbf{Values} \\
+    \hline
+    \endhead
+    -26        & za              \\
+    \hline
+    -25        & ya              \\
+    \hline
+    -24        & xa              \\
+    \hline
+    -23        & wa              \\
+    \hline
+    -22        & va              \\
+    \hline
+    -21        & ua              \\
+    \hline
+    -20        & ta              \\
+    \hline
+    -19        & sa              \\
+    \hline
+    -18        & ra              \\
+    \hline
+    -17        & qa              \\
+    \hline
+    -16        & pa              \\
+    \hline
+    -15        & oa              \\
+    \hline
+    -14        & na              \\
+    \hline
+    -13        & ma              \\ & zb \\
+    \hline
+    -12        & la              \\ & xb \\
+    \hline
+    -11        & ka              \\ & vb \\
+    \hline
+    -10        & ja              \\ & tb \\
+    \hline
+    -9         & ia              \\ & rb \\
+    \hline
+    -8         & 0Z              \\ & ha \\ & pb \\ & xc \\
+    \hline
+    -7         & 6Z              \\ & ga \\ & nb \\ & uc \\
+    \hline
+    -6         & 0X              \\ & 6Y \\ & fa \\ & lb \\ & rc \\ & xd \\
+    \hline
+    -5         & 3W              \\ & 8X \\ & BZ \\ & ea \\ & jb \\ & oc \\ & td \\ & ye \\
+    \hline
+    -4         & 0T              \\ & 4U \\ & 8V \\ & DY \\ & HZ \\ & da \\ & hb \\ & lc \\ & pd \\ & te \\ & xf \\
+    \hline
+    -3         & 0P              \\ & 3Q \\ & 6R \\ & 9S \\ & BV \\ & EW \\ & HX \\ & KY \\ & NZ \\ & ca \\ & fb \\ & ic \\ & ld \\ & oe \\ & rf \\ & ug \\ & xh \\
+    \hline
+    -2         & 0H              \\ & 2I \\ & 4J \\ & 6K \\ & 8L \\ & BQ \\ & DR \\ & FS \\ & HT \\ & JU \\ & LV \\ & NW \\ & PX \\ & RY \\ & TZ \\ & ba \\ & db \\ & fc \\ & hd \\ & je \\ & lf \\ & ng \\ & ph \\ & ri \\ & tj \\ & vk \\ & xl \\ & zm \\
+    \hline
+    1          & Fz              \\ & zF \\ & Gy \\ & yG \\ & Hx \\ & xH \\ & Iw \\ & wI \\ & Jv \\ & vJ \\ & Ku \\ & uK \\ & Lt \\ & tL \\ & Ms \\ & sM \\ & Nr \\ & rN \\ & Oq \\ & qO \\ & Pp \\ & pP \\ & Qo \\ & oQ \\ & Rn \\ & nR \\ & Sm \\ & mS \\ & Tl \\ & lT \\ & Uk \\ & kU \\ & Vj \\ & jV \\ & Wi \\ & iW \\ & Xh \\ & hX \\ & Yg \\ & gY \\ & Zf \\ & fZ \\
+    \hline
+    2          & 0x              \\ & 2w \\ & 4v \\ & 6u \\ & 8t \\ & Bo \\ & Dn \\ & Fm \\ & Hl \\ & Jk \\ & Lj \\ & Ni \\ & Ph \\ & Rg \\ & zS \\ & Tf \\ & xT \\ & vU \\ & Ve \\ & tV \\ & rW \\ & Xd \\ & pX \\ & nY \\ & Zc \\ & lZ \\
+    \hline
+    3          & 0p              \\ &3o\\ &6n\\ &9m\\ &Bj\\ &Ei\\ &Hh\\ &Kg\\ &Nf\\ &Qe\\ &Td\\ &Wc\\ &xX\\ &uY\\ &Zb\\ &rZ \\
+    \hline
+    4          & 0l              \\ &4k\\ &8j\\ &Dg\\ &Hf\\ &Le\\ &Pd\\ &Tc\\ &Xb\\ &xZ\\
+    \hline
+    5          & 3i              \\ &8h\\ &Bf\\ &Ge\\ &Ld\\ &Qc\\ &Vb\\
+    \hline
+    6          & 0h              \\ &6g\\ &Be\\ &Hd\\ &Nc\\ &Tb\\ &Za\\
+    \hline
+    7          & 6f              \\ &Dd\\ &Kc\\ &Rb\\ &Ya\\
+    \hline
+    8          & 0f              \\ &8e\\ &Hc\\ &Pb\\ &Xa\\
+    \hline
+    9          & 3e              \\ &Ec\\ &Nb\\ &Wa\\
+    \hline
+    10         & 8d              \\ &Bc\\ &Lb\\ &Va\\
+    \hline
+    11         & 4d              \\ &Jb\\ &Ua\\
+    \hline
+    12         & 0d              \\ &Hb\\ &Ta\\
+    \hline
+    13         & 9c              \\ &Fb\\ &Sa\\
+    \hline
+    14         & 6c              \\ &Db\\ &Ra\\
+    \hline
+    15         & 3c              \\ &Bb\\ &Qa\\
+    \hline
+    16         & 0c              \\ &Pa\\
+    \hline
+    17         & Oa              \\
+    \hline
+    18         & Na              \\
+    \hline
+    19         & Ma              \\
+    \hline
+    20         & 8b              \\ &La\\
+    \hline
+    21         & 6b              \\ &Ka\\
+    \hline
+    22         & 4b              \\ &Ja\\
+    \hline
+    23         & 2b              \\ &Ia\\
+    \hline
+    24         & 0b              \\ &Ha\\
+    \hline
+    25         & Ga              \\
+    \hline
+    26         & Fa              \\
+    \hline
+    27         & Ea              \\
+    \hline
+    28         & Da              \\
+    \hline
+    29         & Ca              \\
+    \hline
+    30         & Ba              \\
+    \hline
+    31         & Aa              \\
+    \hline
+\end{longtable}
+\end{document}
+
