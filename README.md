@@ -4,6 +4,8 @@
   - [SET-1](set01/)
   - [SET-2](set02/)
   - [SET-3](set03/)
+  - [SET-4](set04/)
+  - [SET-5](set05/)
 - Семинарские ДЗ
   - [ДЗ1](sem01/README.md)
   - [ДЗ2](sem02/queue.tpp)
