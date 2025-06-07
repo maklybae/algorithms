@@ -1,0 +1,541 @@
+n algorithm array_type time cmp
+100 quick random 77 534
+100 quick reversed 95 1033
+100 quick nearly_sorted 85 645
+100 merge random 209 70
+100 merge reversed 199 335
+100 merge nearly_sorted 207 163
+100 msd_radix random 2405
+100 msd_radix reversed 2486
+100 msd_radix nearly_sorted 2572
+100 string_quick random 179
+100 string_quick reversed 164
+100 string_quick nearly_sorted 165
+100 string_merge random 148
+100 string_merge reversed 138
+100 string_merge nearly_sorted 142
+100 string_combo random 102
+100 string_combo reversed 163
+100 string_combo nearly_sorted 119
+200 quick random 167 1197
+200 quick reversed 195 1865
+200 quick nearly_sorted 167 1569
+200 merge random 415 219
+200 merge reversed 379 653
+200 merge nearly_sorted 408 362
+200 msd_radix random 4692
+200 msd_radix reversed 4598
+200 msd_radix nearly_sorted 4921
+200 string_quick random 356
+200 string_quick reversed 344
+200 string_quick nearly_sorted 377
+200 string_merge random 338
+200 string_merge reversed 298
+200 string_merge nearly_sorted 326
+200 string_combo random 228
+200 string_combo reversed 329
+200 string_combo nearly_sorted 271
+300 quick random 265 1754
+300 quick reversed 277 2956
+300 quick nearly_sorted 283 2143
+300 merge random 700 446
+300 merge reversed 624 991
+300 merge nearly_sorted 665 593
+300 msd_radix random 7050
+300 msd_radix reversed 7244
+300 msd_radix nearly_sorted 7425
+300 string_quick random 584
+300 string_quick reversed 565
+300 string_quick nearly_sorted 552
+300 string_merge random 530
+300 string_merge reversed 459
+300 string_merge nearly_sorted 505
+300 string_combo random 363
+300 string_combo reversed 499
+300 string_combo nearly_sorted 417
+400 quick random 371 2597
+400 quick reversed 382 3805
+400 quick nearly_sorted 394 3036
+400 merge random 936 707
+400 merge reversed 829 1299
+400 merge nearly_sorted 939 900
+400 msd_radix random 9540
+400 msd_radix reversed 9679
+400 msd_radix nearly_sorted 9677
+400 string_quick random 790
+400 string_quick reversed 768
+400 string_quick nearly_sorted 792
+400 string_merge random 741
+400 string_merge reversed 627
+400 string_merge nearly_sorted 686
+400 string_combo random 529
+400 string_combo reversed 667
+400 string_combo nearly_sorted 567
+500 quick random 501 3556
+500 quick reversed 522 4966
+500 quick nearly_sorted 507 3919
+500 merge random 1214 1003
+500 merge reversed 1057 1530
+500 merge nearly_sorted 1183 1258
+500 msd_radix random 11974
+500 msd_radix reversed 11928
+500 msd_radix nearly_sorted 11966
+500 string_quick random 1010
+500 string_quick reversed 970
+500 string_quick nearly_sorted 1020
+500 string_merge random 968
+500 string_merge reversed 780
+500 string_merge nearly_sorted 873
+500 string_combo random 668
+500 string_combo reversed 854
+500 string_combo nearly_sorted 731
+600 quick random 615 3999
+600 quick reversed 623 6195
+600 quick nearly_sorted 616 4747
+600 merge random 1463 1365
+600 merge reversed 1344 2003
+600 merge nearly_sorted 1473 1564
+600 msd_radix random 14327
+600 msd_radix reversed 14456
+600 msd_radix nearly_sorted 14404
+600 string_quick random 1231
+600 string_quick reversed 1189
+600 string_quick nearly_sorted 1227
+600 string_merge random 1162
+600 string_merge reversed 969
+600 string_merge nearly_sorted 1090
+600 string_combo random 857
+600 string_combo reversed 996
+600 string_combo nearly_sorted 878
+700 quick random 734 4708
+700 quick reversed 764 6879
+700 quick nearly_sorted 749 5585
+700 merge random 1739 1697
+700 merge reversed 1519 2351
+700 merge nearly_sorted 1778 1797
+700 msd_radix random 16678
+700 msd_radix reversed 16745
+700 msd_radix nearly_sorted 16839
+700 string_quick random 1497
+700 string_quick reversed 1449
+700 string_quick nearly_sorted 1381
+700 string_merge random 1381
+700 string_merge reversed 1153
+700 string_merge nearly_sorted 1294
+700 string_combo random 999
+700 string_combo reversed 1214
+700 string_combo nearly_sorted 1045
+800 quick random 858 5971
+800 quick reversed 853 8037
+800 quick nearly_sorted 850 6765
+800 merge random 2083 2067
+800 merge reversed 1740 2684
+800 merge nearly_sorted 2048 2311
+800 msd_radix random 19393
+800 msd_radix reversed 19021
+800 msd_radix nearly_sorted 19850
+800 string_quick random 1670
+800 string_quick reversed 1702
+800 string_quick nearly_sorted 1646
+800 string_merge random 1662
+800 string_merge reversed 1355
+800 string_merge nearly_sorted 1536
+800 string_combo random 1209
+800 string_combo reversed 1424
+800 string_combo nearly_sorted 1247
+900 quick random 1025 6770
+900 quick reversed 1029 9070
+900 quick nearly_sorted 1071 7799
+900 merge random 2423 2458
+900 merge reversed 2109 2934
+900 merge nearly_sorted 2392 2718
+900 msd_radix random 22317
+900 msd_radix reversed 22043
+900 msd_radix nearly_sorted 22536
+900 string_quick random 1945
+900 string_quick reversed 1874
+900 string_quick nearly_sorted 1934
+900 string_merge random 1883
+900 string_merge reversed 1518
+900 string_merge nearly_sorted 1745
+900 string_combo random 1391
+900 string_combo reversed 1612
+900 string_combo nearly_sorted 1445
+1000 quick random 1215 7697
+1000 quick reversed 1190 10076
+1000 quick nearly_sorted 1219 8523
+1000 merge random 2866 2861
+1000 merge reversed 2338 3161
+1000 merge nearly_sorted 2739 3151
+1000 msd_radix random 25102
+1000 msd_radix reversed 24592
+1000 msd_radix nearly_sorted 25246
+1000 string_quick random 2121
+1000 string_quick reversed 2105
+1000 string_quick nearly_sorted 2151
+1000 string_merge random 2104
+1000 string_merge reversed 1676
+1000 string_merge nearly_sorted 1945
+1000 string_combo random 1562
+1000 string_combo reversed 1786
+1000 string_combo nearly_sorted 1595
+1100 quick random 1300 9085
+1100 quick reversed 1313 11183
+1100 quick nearly_sorted 1333 9282
+1100 merge random 3077 3335
+1100 merge reversed 2641 3601
+1100 merge nearly_sorted 3033 3643
+1100 msd_radix random 27302
+1100 msd_radix reversed 26939
+1100 msd_radix nearly_sorted 27707
+1100 string_quick random 2387
+1100 string_quick reversed 2396
+1100 string_quick nearly_sorted 2393
+1100 string_merge random 2357
+1100 string_merge reversed 1875
+1100 string_merge nearly_sorted 2185
+1100 string_combo random 1759
+1100 string_combo reversed 1989
+1100 string_combo nearly_sorted 1819
+1200 quick random 1461 9577
+1200 quick reversed 1430 12286
+1200 quick nearly_sorted 1482 10430
+1200 merge random 3354 3828
+1200 merge reversed 2900 4031
+1200 merge nearly_sorted 3290 4083
+1200 msd_radix random 29755
+1200 msd_radix reversed 29394
+1200 msd_radix nearly_sorted 30077
+1200 string_quick random 2594
+1200 string_quick reversed 2600
+1200 string_quick nearly_sorted 2673
+1200 string_merge random 2585
+1200 string_merge reversed 2069
+1200 string_merge nearly_sorted 2390
+1200 string_combo random 1933
+1200 string_combo reversed 2159
+1200 string_combo nearly_sorted 1967
+1300 quick random 1568 10747
+1300 quick reversed 1537 12961
+1300 quick nearly_sorted 1558 11260
+1300 merge random 3656 4279
+1300 merge reversed 3153 4257
+1300 merge nearly_sorted 3576 4562
+1300 msd_radix random 32290
+1300 msd_radix reversed 31882
+1300 msd_radix nearly_sorted 32460
+1300 string_quick random 2856
+1300 string_quick reversed 2901
+1300 string_quick nearly_sorted 2866
+1300 string_merge random 2826
+1300 string_merge reversed 2235
+1300 string_merge nearly_sorted 2611
+1300 string_combo random 2124
+1300 string_combo reversed 2313
+1300 string_combo nearly_sorted 2155
+1400 quick random 1760 11825
+1400 quick reversed 1638 13711
+1400 quick nearly_sorted 1725 12380
+1400 merge random 3983 4721
+1400 merge reversed 3424 4758
+1400 merge nearly_sorted 3875 5044
+1400 msd_radix random 35101
+1400 msd_radix reversed 34785
+1400 msd_radix nearly_sorted 35245
+1400 string_quick random 3115
+1400 string_quick reversed 3136
+1400 string_quick nearly_sorted 3051
+1400 string_merge random 3074
+1400 string_merge reversed 2437
+1400 string_merge nearly_sorted 2828
+1400 string_combo random 2308
+1400 string_combo reversed 2490
+1400 string_combo nearly_sorted 2334
+1500 quick random 1871 12961
+1500 quick reversed 1754 14657
+1500 quick nearly_sorted 1907 13260
+1500 merge random 4295 5197
+1500 merge reversed 3693 5065
+1500 merge nearly_sorted 4196 5582
+1500 msd_radix random 37258
+1500 msd_radix reversed 37012
+1500 msd_radix nearly_sorted 37205
+1500 string_quick random 3345
+1500 string_quick reversed 3320
+1500 string_quick nearly_sorted 3378
+1500 string_merge random 3316
+1500 string_merge reversed 2623
+1500 string_merge nearly_sorted 3062
+1500 string_combo random 2483
+1500 string_combo reversed 2666
+1500 string_combo nearly_sorted 2561
+1600 quick random 2014 14286
+1600 quick reversed 1894 15898
+1600 quick nearly_sorted 2037 14423
+1600 merge random 4621 5733
+1600 merge reversed 3956 5380
+1600 merge nearly_sorted 4513 6110
+1600 msd_radix random 39856
+1600 msd_radix reversed 39369
+1600 msd_radix nearly_sorted 39689
+1600 string_quick random 3572
+1600 string_quick reversed 3547
+1600 string_quick nearly_sorted 3580
+1600 string_merge random 3564
+1600 string_merge reversed 2783
+1600 string_merge nearly_sorted 3286
+1600 string_combo random 2697
+1600 string_combo reversed 2879
+1600 string_combo nearly_sorted 2748
+1700 quick random 2159 14703
+1700 quick reversed 2122 17075
+1700 quick nearly_sorted 2102 15369
+1700 merge random 4924 6227
+1700 merge reversed 4207 5669
+1700 merge nearly_sorted 4816 6566
+1700 msd_radix random 42299
+1700 msd_radix reversed 41874
+1700 msd_radix nearly_sorted 42213
+1700 string_quick random 3707
+1700 string_quick reversed 3905
+1700 string_quick nearly_sorted 3784
+1700 string_merge random 3805
+1700 string_merge reversed 2946
+1700 string_merge nearly_sorted 3524
+1700 string_combo random 2894
+1700 string_combo reversed 3058
+1700 string_combo nearly_sorted 2923
+1800 quick random 2283 16096
+1800 quick reversed 2110 18048
+1800 quick nearly_sorted 2318 16884
+1800 merge random 5247 6711
+1800 merge reversed 4469 5868
+1800 merge nearly_sorted 5134 7166
+1800 msd_radix random 44739
+1800 msd_radix reversed 44271
+1800 msd_radix nearly_sorted 44774
+1800 string_quick random 3985
+1800 string_quick reversed 4146
+1800 string_quick nearly_sorted 4014
+1800 string_merge random 4046
+1800 string_merge reversed 3127
+1800 string_merge nearly_sorted 3747
+1800 string_combo random 3051
+1800 string_combo reversed 3241
+1800 string_combo nearly_sorted 3103
+1900 quick random 2399 16598
+1900 quick reversed 2319 18953
+1900 quick nearly_sorted 2508 17310
+1900 merge random 5566 7249
+1900 merge reversed 4726 6255
+1900 merge nearly_sorted 5449 7753
+1900 msd_radix random 47234
+1900 msd_radix reversed 46671
+1900 msd_radix nearly_sorted 47238
+1900 string_quick random 4391
+1900 string_quick reversed 4258
+1900 string_quick nearly_sorted 4271
+1900 string_merge random 4273
+1900 string_merge reversed 3303
+1900 string_merge nearly_sorted 3992
+1900 string_combo random 3280
+1900 string_combo reversed 3416
+1900 string_combo nearly_sorted 3281
+2000 quick random 2631 18385
+2000 quick reversed 2436 19825
+2000 quick nearly_sorted 2631 18790
+2000 merge random 5893 7750
+2000 merge reversed 4969 6316
+2000 merge nearly_sorted 5789 8314
+2000 msd_radix random 49640
+2000 msd_radix reversed 49038
+2000 msd_radix nearly_sorted 49842
+2000 string_quick random 4626
+2000 string_quick reversed 4585
+2000 string_quick nearly_sorted 4475
+2000 string_merge random 4530
+2000 string_merge reversed 3459
+2000 string_merge nearly_sorted 4198
+2000 string_combo random 3470
+2000 string_combo reversed 3588
+2000 string_combo nearly_sorted 3510
+2100 quick random 2716 19372
+2100 quick reversed 2576 20939
+2100 quick nearly_sorted 2843 19898
+2100 merge random 6198 8320
+2100 merge reversed 5231 6669
+2100 merge nearly_sorted 6085 8776
+2100 msd_radix random 51611
+2100 msd_radix reversed 50897
+2100 msd_radix nearly_sorted 51902
+2100 string_quick random 4705
+2100 string_quick reversed 4548
+2100 string_quick nearly_sorted 4716
+2100 string_merge random 4692
+2100 string_merge reversed 3615
+2100 string_merge nearly_sorted 4349
+2100 string_combo random 3577
+2100 string_combo reversed 3689
+2100 string_combo nearly_sorted 3556
+2200 quick random 2820 20600
+2200 quick reversed 2656 22090
+2200 quick nearly_sorted 2706 21278
+2200 merge random 6399 8895
+2200 merge reversed 5453 7307
+2200 merge nearly_sorted 6242 9232
+2200 msd_radix random 53200
+2200 msd_radix reversed 52343
+2200 msd_radix nearly_sorted 53212
+2200 string_quick random 4936
+2200 string_quick reversed 4986
+2200 string_quick nearly_sorted 4936
+2200 string_merge random 4933
+2200 string_merge reversed 3850
+2200 string_merge nearly_sorted 4576
+2200 string_combo random 3758
+2200 string_combo reversed 3847
+2200 string_combo nearly_sorted 3777
+2300 quick random 2894 21801
+2300 quick reversed 2684 23618
+2300 quick nearly_sorted 2930 21859
+2300 merge random 6770 9475
+2300 merge reversed 5668 7518
+2300 merge nearly_sorted 6557 9888
+2300 msd_radix random 56262
+2300 msd_radix reversed 55282
+2300 msd_radix nearly_sorted 56637
+2300 string_quick random 5351
+2300 string_quick reversed 5160
+2300 string_quick nearly_sorted 5212
+2300 string_merge random 5276
+2300 string_merge reversed 4041
+2300 string_merge nearly_sorted 4917
+2300 string_combo random 4062
+2300 string_combo reversed 4147
+2300 string_combo nearly_sorted 4054
+2400 quick random 3221 22544
+2400 quick reversed 2892 24054
+2400 quick nearly_sorted 3199 22785
+2400 merge random 7213 10113
+2400 merge reversed 6111 8126
+2400 merge nearly_sorted 7034 10344
+2400 msd_radix random 59647
+2400 msd_radix reversed 58954
+2400 msd_radix nearly_sorted 59600
+2400 string_quick random 5478
+2400 string_quick reversed 5535
+2400 string_quick nearly_sorted 5471
+2400 string_merge random 5532
+2400 string_merge reversed 4266
+2400 string_merge nearly_sorted 5126
+2400 string_combo random 4295
+2400 string_combo reversed 4294
+2400 string_combo nearly_sorted 4238
+2500 quick random 3231 22860
+2500 quick reversed 3120 25562
+2500 quick nearly_sorted 3335 23859
+2500 merge random 7546 10642
+2500 merge reversed 6427 8365
+2500 merge nearly_sorted 7358 11010
+2500 msd_radix random 61074
+2500 msd_radix reversed 60554
+2500 msd_radix nearly_sorted 61265
+2500 string_quick random 5757
+2500 string_quick reversed 5529
+2500 string_quick nearly_sorted 5722
+2500 string_merge random 5741
+2500 string_merge reversed 4422
+2500 string_merge nearly_sorted 5353
+2500 string_combo random 4383
+2500 string_combo reversed 4433
+2500 string_combo nearly_sorted 4400
+2600 quick random 3370 25019
+2600 quick reversed 3183 26054
+2600 quick nearly_sorted 3420 25193
+2600 merge random 7763 11264
+2600 merge reversed 6532 8737
+2600 merge nearly_sorted 7586 11714
+2600 msd_radix random 63399
+2600 msd_radix reversed 62716
+2600 msd_radix nearly_sorted 63173
+2600 string_quick random 5902
+2600 string_quick reversed 6173
+2600 string_quick nearly_sorted 5825
+2600 string_merge random 5992
+2600 string_merge reversed 4617
+2600 string_merge nearly_sorted 5541
+2600 string_combo random 4599
+2600 string_combo reversed 4594
+2600 string_combo nearly_sorted 4566
+2700 quick random 3653 26481
+2700 quick reversed 3384 27064
+2700 quick nearly_sorted 3564 26592
+2700 merge random 8069 11849
+2700 merge reversed 6793 9203
+2700 merge nearly_sorted 7851 12163
+2700 msd_radix random 66064
+2700 msd_radix reversed 65224
+2700 msd_radix nearly_sorted 65459
+2700 string_quick random 6384
+2700 string_quick reversed 6201
+2700 string_quick nearly_sorted 6128
+2700 string_merge random 6269
+2700 string_merge reversed 4835
+2700 string_merge nearly_sorted 5833
+2700 string_combo random 4799
+2700 string_combo reversed 4773
+2700 string_combo nearly_sorted 4787
+2800 quick random 3702 27442
+2800 quick reversed 3408 28372
+2800 quick nearly_sorted 3696 27753
+2800 merge random 8378 12455
+2800 merge reversed 7084 9642
+2800 merge nearly_sorted 8156 12924
+2800 msd_radix random 68602
+2800 msd_radix reversed 67805
+2800 msd_radix nearly_sorted 67936
+2800 string_quick random 6458
+2800 string_quick reversed 6381
+2800 string_quick nearly_sorted 6636
+2800 string_merge random 6541
+2800 string_merge reversed 5060
+2800 string_merge nearly_sorted 6087
+2800 string_combo random 4991
+2800 string_combo reversed 4959
+2800 string_combo nearly_sorted 4966
+2900 quick random 3862 28465
+2900 quick reversed 3649 28916
+2900 quick nearly_sorted 3729 27895
+2900 merge random 8698 13028
+2900 merge reversed 7397 9916
+2900 merge nearly_sorted 8494 13602
+2900 msd_radix random 71376
+2900 msd_radix reversed 70547
+2900 msd_radix nearly_sorted 71452
+2900 string_quick random 6865
+2900 string_quick reversed 6826
+2900 string_quick nearly_sorted 6654
+2900 string_merge random 6849
+2900 string_merge reversed 5242
+2900 string_merge nearly_sorted 6328
+2900 string_combo random 5269
+2900 string_combo reversed 5178
+2900 string_combo nearly_sorted 5183
+3000 quick random 4089 29374
+3000 quick reversed 3581 30131
+3000 quick nearly_sorted 3797 29751
+3000 merge random 9081 13643
+3000 merge reversed 7657 10297
+3000 merge nearly_sorted 8871 14180
+3000 msd_radix random 73317
+3000 msd_radix reversed 72515
+3000 msd_radix nearly_sorted 72778
+3000 string_quick random 7053
+3000 string_quick reversed 6776
+3000 string_quick nearly_sorted 7124
+3000 string_merge random 7041
+3000 string_merge reversed 5460
+3000 string_merge nearly_sorted 6572
+3000 string_combo random 5397
+3000 string_combo reversed 5347
+3000 string_combo nearly_sorted 5375
